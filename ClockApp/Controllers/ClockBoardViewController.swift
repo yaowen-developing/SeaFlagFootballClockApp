@@ -17,14 +17,17 @@ class ClockBoardViewController: UIViewController {
     private var gameClock: Clock
     private var playClock: Clock
     
-    init(gameClock: Clock, playClock: Clock) {
-        
-        self.gameClock = Clock(length: 600)
-        self.playClock = Clock(length: 300)
+    convenience init(){
+        self.init(gameClock: nil, playClock: nil)
+    }
+    
+    init(gameClock: Clock?, playClock: Clock?) {
+        self.gameClock = gameClock!
+        self.playClock = playClock!
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
         fatalError("init(coder:) has not been implemented")
     }
     override func viewDidLoad() {

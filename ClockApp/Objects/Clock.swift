@@ -34,10 +34,18 @@ class Clock {
         self.remaining = length
         self.state = ClockState.standBy
     }
+    
+    func getTimeString() -> String{
+        return String(format: "%d:%0.2d", remaining / 60, remaining % 60)
+    }
+    
     func countDown(){
+        if(up()){
+            return
+        }
         self.remaining -= 1
     }
     func up() -> Bool {
-        self.remaining == 0
+        return self.remaining == 0
     }
 }

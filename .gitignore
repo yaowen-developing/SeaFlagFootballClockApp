@@ -47,7 +47,7 @@ playground.xcworkspace
 # .swiftpm
 
 .build/
-
+.DS_Store
 # CocoaPods
 #
 # We recommend against adding the Pods directory to your .gitignore. However
@@ -88,3 +88,4 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+
