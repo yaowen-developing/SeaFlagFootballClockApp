@@ -14,11 +14,25 @@ class ClockBoardViewController: UIViewController {
     var countdown2: Int?
     var running: Bool?
     
+    private var gameClock: Clock
+    private var playClock: Clock
+    
+    init(gameClock: Clock, playClock: Clock) {
+        
+        self.gameClock = Clock(length: 600)
+        self.playClock = Clock(length: 300)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         self.view.addSubview(clockLabel)
         self.view.addSubview(clockLabel2)
+        
         running = true
         countdown = 10
         countdown2 = 5
