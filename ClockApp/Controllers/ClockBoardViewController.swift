@@ -6,24 +6,16 @@
 //
 
 import UIKit
-import AVFoundation
 
 class ClockBoardViewController: UIViewController {
 
-    var countdown: Int?
-    var countdown2: Int?
-    var running: Bool?
-    
-    private var gameClock: Clock
-    private var playClock: Clock
+
     
     convenience init(){
-        self.init(gameClock: nil, playClock: nil)
+        self.init(game: nil)
     }
     
-    init(gameClock: Clock?, playClock: Clock?) {
-        self.gameClock = gameClock!
-        self.playClock = playClock!
+    init(game: Game?) {
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -33,64 +25,40 @@ class ClockBoardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        self.view.addSubview(clockLabel)
-        self.view.addSubview(clockLabel2)
+        self.view.addSubview(gameClockLabel)
+        self.view.addSubview(playClockLabel)
         
-        running = true
-        countdown = 10
-        countdown2 = 5
         let tap = UITapGestureRecognizer(target: self, action: #selector(startPause))
-        tap.numberOfTapsRequired = 2
+        tap.numberOfTapsRequired = 3
         view.addGestureRecognizer(tap)
-        var timer1 = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countDown), userInfo: nil, repeats: true)
-        var timer2 = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countDown2), userInfo: nil, repeats: true)
+
+
         // Do any additional setup after loading the view.
     }
     
-    @objc
-    func countDown(){
-        if(running! && countdown! > 0){
-            countdown! -= 1
-            clockLabel.text = String(countdown!)
-        }
 
-    
-    }
-    
-    @objc
-    func countDown2(){
-        if(running! && countdown2! > 0){
-            countdown2! -= 1
-            clockLabel2.text = String(countdown2!)
-        }
-        if(countdown == 0){
-    
-           AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-
-        }
-    }
     
     @objc
     func startPause(){
-        running = !running!
+
     }
     
     
-    lazy var clockLabel: UILabel = {
-        let label = UILabel(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
+    lazy var gameClockLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x: 100, y: 100, width: 300, height: 100))
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "This is label view."
         label.font = UIFont.systemFont(ofSize: 12)
         return label
     }()
     
-    lazy var clockLabel2: UILabel = {
-        let label = UILabel(frame: CGRect(x: 100, y: 300, width: 100, height: 100))
+    lazy var playClockLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x: 100, y: 300, width: 300, height: 100))
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "This is label view."
         label.font = UIFont.systemFont(ofSize: 12)
         return label
     }()
+    
+ 
     /*
     // MARK: - Navigation
 

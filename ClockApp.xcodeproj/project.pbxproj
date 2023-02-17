@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		391FA4D5299EF1CE0097B27D /* GameDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391FA4D4299EF1CE0097B27D /* GameDriver.swift */; };
+		391FA4D7299EF1D60097B27D /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391FA4D6299EF1D60097B27D /* Game.swift */; };
 		39500557299DC2E900285901 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39500556299DC2E900285901 /* AppDelegate.swift */; };
 		39500559299DC2E900285901 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39500558299DC2E900285901 /* SceneDelegate.swift */; };
 		39500560299DC2EA00285901 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3950055F299DC2EA00285901 /* Assets.xcassets */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		391FA4D4299EF1CE0097B27D /* GameDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDriver.swift; sourceTree = "<group>"; };
+		391FA4D6299EF1D60097B27D /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		39500553299DC2E900285901 /* ClockApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClockApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39500556299DC2E900285901 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		39500558299DC2E900285901 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -79,6 +83,8 @@
 			isa = PBXGroup;
 			children = (
 				39500570299DE43600285901 /* Clock.swift */,
+				391FA4D4299EF1CE0097B27D /* GameDriver.swift */,
+				391FA4D6299EF1D60097B27D /* Game.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -154,6 +160,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3950056C299DC47700285901 /* ClockBoardViewController.swift in Sources */,
+				391FA4D7299EF1D60097B27D /* Game.swift in Sources */,
+				391FA4D5299EF1CE0097B27D /* GameDriver.swift in Sources */,
 				39500557299DC2E900285901 /* AppDelegate.swift in Sources */,
 				39500571299DE43600285901 /* Clock.swift in Sources */,
 				39500559299DC2E900285901 /* SceneDelegate.swift in Sources */,
@@ -301,6 +309,7 @@
 				INFOPLIST_FILE = ClockApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Game Clock";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = NO;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
@@ -337,6 +346,7 @@
 				INFOPLIST_FILE = ClockApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Game Clock";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = NO;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";

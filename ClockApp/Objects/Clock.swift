@@ -13,12 +13,17 @@ enum ClockState {
     case ended
     case standBy
 }
+class PlayClock: Clock{
+    override func getTimeString() -> String {
+        return String(format: "%d", Int(ceil(remaining)))
+    }
+}
 class Clock {
-    let length: Int
-    var remaining: Int
+    let length: Float
+    var remaining: Float
     var state: ClockState
     
-    init(length: Int) {
+    init(length: Float) {
         self.length = length
         self.remaining = length
         self.state = ClockState.standBy
@@ -36,16 +41,20 @@ class Clock {
     }
     
     func getTimeString() -> String{
-        return String(format: "%d:%0.2d", remaining / 60, remaining % 60)
+        return String(format: "%d:%0.2d", Int(ceil(remaining)) / 60, Int(ceil(remaining))%60)
+    }
+    
+    func isRunning() -> Bool {
+        return self.state == ClockState.running
     }
     
     func countDown(){
         if(up()){
             return
         }
-        self.remaining -= 1
+        self.remaining -= 0.1
     }
     func up() -> Bool {
-        return self.remaining == 0
+        return self.remaining <= 0
     }
 }
