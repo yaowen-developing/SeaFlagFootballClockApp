@@ -15,6 +15,7 @@
 		39500563299DC2EA00285901 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39500561299DC2EA00285901 /* LaunchScreen.storyboard */; };
 		3950056C299DC47700285901 /* ClockBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3950056B299DC47700285901 /* ClockBoardViewController.swift */; };
 		39500571299DE43600285901 /* GameClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39500570299DE43600285901 /* GameClock.swift */; };
+		39ACCB9929A12F4A0016638F /* GameSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39ACCB9829A12F4A0016638F /* GameSetupViewController.swift */; };
 		39B6266629A048A70094C7EE /* RefOperationPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B6266529A048A70094C7EE /* RefOperationPanelViewController.swift */; };
 		39B6266829A07B5D0094C7EE /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B6266729A07B5D0094C7EE /* Extensions.swift */; };
 		39B6266A29A07BC60094C7EE /* PlayClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B6266929A07BC60094C7EE /* PlayClock.swift */; };
@@ -31,6 +32,7 @@
 		39500564299DC2EA00285901 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3950056B299DC47700285901 /* ClockBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockBoardViewController.swift; sourceTree = "<group>"; };
 		39500570299DE43600285901 /* GameClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClock.swift; sourceTree = "<group>"; };
+		39ACCB9829A12F4A0016638F /* GameSetupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSetupViewController.swift; sourceTree = "<group>"; };
 		39B6266529A048A70094C7EE /* RefOperationPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefOperationPanelViewController.swift; sourceTree = "<group>"; };
 		39B6266729A07B5D0094C7EE /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		39B6266929A07BC60094C7EE /* PlayClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayClock.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 			children = (
 				3950056B299DC47700285901 /* ClockBoardViewController.swift */,
 				39B6266529A048A70094C7EE /* RefOperationPanelViewController.swift */,
+				39ACCB9829A12F4A0016638F /* GameSetupViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -168,6 +171,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39ACCB9929A12F4A0016638F /* GameSetupViewController.swift in Sources */,
 				3950056C299DC47700285901 /* ClockBoardViewController.swift in Sources */,
 				39B6266A29A07BC60094C7EE /* PlayClock.swift in Sources */,
 				391FA4D7299EF1D60097B27D /* Game.swift in Sources */,
