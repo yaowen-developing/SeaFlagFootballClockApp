@@ -14,7 +14,10 @@
 		39500560299DC2EA00285901 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3950055F299DC2EA00285901 /* Assets.xcassets */; };
 		39500563299DC2EA00285901 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39500561299DC2EA00285901 /* LaunchScreen.storyboard */; };
 		3950056C299DC47700285901 /* ClockBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3950056B299DC47700285901 /* ClockBoardViewController.swift */; };
-		39500571299DE43600285901 /* Clock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39500570299DE43600285901 /* Clock.swift */; };
+		39500571299DE43600285901 /* GameClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39500570299DE43600285901 /* GameClock.swift */; };
+		39B6266629A048A70094C7EE /* RefOperationPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B6266529A048A70094C7EE /* RefOperationPanelViewController.swift */; };
+		39B6266829A07B5D0094C7EE /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B6266729A07B5D0094C7EE /* Extensions.swift */; };
+		39B6266A29A07BC60094C7EE /* PlayClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B6266929A07BC60094C7EE /* PlayClock.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +30,10 @@
 		39500562299DC2EA00285901 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		39500564299DC2EA00285901 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3950056B299DC47700285901 /* ClockBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockBoardViewController.swift; sourceTree = "<group>"; };
-		39500570299DE43600285901 /* Clock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clock.swift; sourceTree = "<group>"; };
+		39500570299DE43600285901 /* GameClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClock.swift; sourceTree = "<group>"; };
+		39B6266529A048A70094C7EE /* RefOperationPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefOperationPanelViewController.swift; sourceTree = "<group>"; };
+		39B6266729A07B5D0094C7EE /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		39B6266929A07BC60094C7EE /* PlayClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayClock.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +68,7 @@
 			children = (
 				3950056F299DE42800285901 /* Objects */,
 				3950056A299DC44D00285901 /* Controllers */,
+				39B6266729A07B5D0094C7EE /* Extensions.swift */,
 				39500556299DC2E900285901 /* AppDelegate.swift */,
 				39500558299DC2E900285901 /* SceneDelegate.swift */,
 				3950055F299DC2EA00285901 /* Assets.xcassets */,
@@ -75,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				3950056B299DC47700285901 /* ClockBoardViewController.swift */,
+				39B6266529A048A70094C7EE /* RefOperationPanelViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -82,9 +90,10 @@
 		3950056F299DE42800285901 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				39500570299DE43600285901 /* Clock.swift */,
+				39500570299DE43600285901 /* GameClock.swift */,
 				391FA4D4299EF1CE0097B27D /* GameDriver.swift */,
 				391FA4D6299EF1D60097B27D /* Game.swift */,
+				39B6266929A07BC60094C7EE /* PlayClock.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -160,10 +169,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				3950056C299DC47700285901 /* ClockBoardViewController.swift in Sources */,
+				39B6266A29A07BC60094C7EE /* PlayClock.swift in Sources */,
 				391FA4D7299EF1D60097B27D /* Game.swift in Sources */,
 				391FA4D5299EF1CE0097B27D /* GameDriver.swift in Sources */,
+				39B6266829A07B5D0094C7EE /* Extensions.swift in Sources */,
 				39500557299DC2E900285901 /* AppDelegate.swift in Sources */,
-				39500571299DE43600285901 /* Clock.swift in Sources */,
+				39500571299DE43600285901 /* GameClock.swift in Sources */,
+				39B6266629A048A70094C7EE /* RefOperationPanelViewController.swift in Sources */,
 				39500559299DC2E900285901 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -309,10 +321,9 @@
 				INFOPLIST_FILE = ClockApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Game Clock";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = NO;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -346,10 +357,9 @@
 				INFOPLIST_FILE = ClockApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Game Clock";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = NO;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;

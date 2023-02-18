@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = ClockBoardViewController()
+            window.rootViewController = ClockBoardViewController(game: Game(numOfQuarters: 1, quarterLength: 5, playClockLength: 5, stoppageLineInMin: 1, warningLineInMin: 2, quarterBreakLength: 1, halfBreakLength: 1, timeoutLength: 1, timeoutLimit: 1))
             self.window = window
             window.makeKeyAndVisible()
         }

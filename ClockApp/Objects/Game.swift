@@ -9,7 +9,9 @@ import Foundation
 
 class Game {
     let numOfQuarters: Int
-    let quarterLength: Double
+    let quarterLength: Decimal
+    let playClockLength: Decimal
+    
     let stoppageLineInMin: Int
     let warningLineInMin: Int
     let quarterBreakLength: Int
@@ -26,9 +28,10 @@ class Game {
     }
     
     
-    init(numOfQuarters: Int, quarterLength: Double, stoppageLineInMin: Int, warningLineInMin: Int, quarterBreakLength: Int, halfBreakLength: Int, timeoutLength: Int, timeoutLimit: Int) {
+    init(numOfQuarters: Int, quarterLength: Decimal, playClockLength: Decimal, stoppageLineInMin: Int, warningLineInMin: Int, quarterBreakLength: Int, halfBreakLength: Int, timeoutLength: Int, timeoutLimit: Int) {
         self.numOfQuarters = numOfQuarters
         self.quarterLength = quarterLength
+        self.playClockLength = playClockLength
         self.stoppageLineInMin = stoppageLineInMin
         self.warningLineInMin = warningLineInMin
         self.quarterBreakLength = quarterBreakLength
@@ -38,4 +41,13 @@ class Game {
     }
     
 
+    func timeout() -> Bool {
+        return true
+    }
+    func flag(){
+    }
+    func incomplete(){
+    }
+    func score(){
+    }
 }
