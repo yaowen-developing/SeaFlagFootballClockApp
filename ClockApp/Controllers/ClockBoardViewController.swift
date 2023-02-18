@@ -10,10 +10,10 @@ import AVFoundation
 
 
 class ClockBoardViewController: UIViewController, ClockPresenter, RefOperationExecutor {
-
     
-
-
+    
+    
+    
     var gameDriver: GameDriver?
     
     convenience init(){
@@ -23,9 +23,22 @@ class ClockBoardViewController: UIViewController, ClockPresenter, RefOperationEx
     init(game: Game?) {
         super.init(nibName: nil, bundle: nil)
         gameDriver = GameDriver(game: game!)
-        gameDriver!.start()
         gameDriver?.registerGameClockPresenter(presenter: self)
         gameDriver?.registerPlayClockPresenter(presenter: self)
+    }
+    
+    func showAlert(){
+        let alertController = UIAlertController(title: "Confirmation", message:
+                                                    "Click start to run the clock", preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "Start", style: .default, handler: confirm))
+        alertController.modalPresentationStyle = .fullScreen
+        self.present(alertController, animated: true, completion: nil)
+    }
+    func confirm(alert: UIAlertAction!){
+        confirmStart()
+    }
+    func confirmStart(){
+        gameDriver?.start()
     }
     
     required init?(coder: NSCoder) {
@@ -33,11 +46,15 @@ class ClockBoardViewController: UIViewController, ClockPresenter, RefOperationEx
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupViews()
         setupGestures()
         // Do any additional setup after loading the view.
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+        showAlert()
+    }
+    override func viewDidLayoutSubviews() {
+        setupViews()
+    }
     func setupGestures() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(operate))
         tap.numberOfTapsRequired = 3
@@ -46,7 +63,9 @@ class ClockBoardViewController: UIViewController, ClockPresenter, RefOperationEx
     func setupViews(){
         self.view.backgroundColor = .white
         self.view.addSubview(gameClockLabel)
+        gameClockLabel.frame = CGRect(x: 0, y: 100, width: self.view.frame.width, height: self.view.frame.height / 2)
         self.view.addSubview(playClockLabel)
+        playClockLabel.frame = CGRect(x: 0, y: 100 + self.view.frame.height / 2, width: self.view.frame.width, height: 200)
     }
     
     @objc
@@ -101,7 +120,7 @@ class ClockBoardViewController: UIViewController, ClockPresenter, RefOperationEx
     }
     
     lazy var gameClockLabel: UILabel = {
-        let label = UILabel(frame: CGRect(x: 0, y: 100, width: self.view.frame.width, height: self.view.frame.height / 2))
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 100)
         label.textAlignment = .center
@@ -110,7 +129,7 @@ class ClockBoardViewController: UIViewController, ClockPresenter, RefOperationEx
     }()
     
     lazy var playClockLabel: UILabel = {
-        let label = UILabel(frame: CGRect(x: 0, y: 100 + self.view.frame.height / 2, width: self.view.frame.width, height: 200))
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 50)
         label.textAlignment = .center
@@ -118,15 +137,17 @@ class ClockBoardViewController: UIViewController, ClockPresenter, RefOperationEx
         return label
     }()
     
- 
+    
+    
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

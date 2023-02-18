@@ -8,16 +8,16 @@
 import Foundation
 
 class Game {
-    let numOfQuarters: Int
+    let numOfQuarters: Int?
     let quarterLength: Decimal
     let playClockLength: Decimal
     
     let stoppageLineInMin: Int
     let warningLineInMin: Int
-    let quarterBreakLength: Int
-    let halfBreakLength: Int
-    let timeoutLength: Int
-    let timeoutLimit: Int
+    let quarterBreakLength: Int?
+    let halfBreakLength: Int?
+    let timeoutLength: Int?
+    let timeoutLimit: Int?
     
 
     
@@ -27,8 +27,7 @@ class Game {
         case refOperating
     }
     
-    
-    init(numOfQuarters: Int, quarterLength: Decimal, playClockLength: Decimal, stoppageLineInMin: Int, warningLineInMin: Int, quarterBreakLength: Int, halfBreakLength: Int, timeoutLength: Int, timeoutLimit: Int) {
+    init(numOfQuarters: Int = 4, quarterLength: Decimal, playClockLength: Decimal, stoppageLineInMin: Int, warningLineInMin: Int, quarterBreakLength: Int = 3, halfBreakLength: Int = 10, timeoutLength: Int = 2, timeoutLimit: Int = 3) {
         self.numOfQuarters = numOfQuarters
         self.quarterLength = quarterLength
         self.playClockLength = playClockLength
@@ -39,6 +38,7 @@ class Game {
         self.timeoutLength = timeoutLength
         self.timeoutLimit = timeoutLimit
     }
+ 
     
 
     func timeout() -> Bool {

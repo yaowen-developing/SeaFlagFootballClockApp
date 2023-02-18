@@ -21,6 +21,8 @@ class GameSetupViewController: UIViewController {
         self.view.addSubview(clockStoppageRangeSetupLabel)
         self.view.addSubview(clockStoppageRangeSlider)
         clockStoppageRangeSlider.addTarget(self, action: #selector(changeClockStoppageRangeSetup), for: .valueChanged)
+        self.view.addSubview(createButton)
+        createButton.addTarget(self, action: #selector(createGame), for: .touchDown)
     }
     
     
@@ -95,6 +97,26 @@ class GameSetupViewController: UIViewController {
     func changeClockStoppageRangeSetup(){
         clockStoppageRangeSetupLabel.text = "Stoppage range: " + String(describing: Int(clockStoppageRangeSlider.value))
     }
+    
+    
+    lazy var createButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 80, y: 600, width: self.view.frame.width - 160, height: 50))
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 24)
+        button.setTitle("Create", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .darkGray
+        button.layer.cornerRadius = 8
+        return button
+    }()
+    
+    @objc
+    func createGame(){
+        let vc = ClockBoardViewController(game: Game(quarterLength: Decimal(Int(quarterLengthSlider.value) * 60), playClockLength: 40, stoppageLineInMin: Int(clockStoppageRangeSlider.value), warningLineInMin: Int(shortMinutesSetupSlider.value)))
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+    }
+    
     /*
     // MARK: - Navigation
 
