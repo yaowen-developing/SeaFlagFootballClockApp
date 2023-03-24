@@ -10,37 +10,38 @@ import Foundation
 class PlayClock: GameClock{
     override init(game: Game) {
         super.init(game: game)
-        self.length = game.playClockLength
-        self.remaining = game.playClockLength
+        self.duration = game.playClockDuration
+        self.remaining = game.playClockDuration
     }
     
     override func updateClockPresenters(){
         if(remaining == 0){
             self.state = .ended
-            alertPlayClockTimeup()
+            self.alertPlayClockTimeup()
         }
         else{
-            updatePlayClockPresenters()
+            self.updatePlayClockPresenters()
         }
     }
     
-    
     func updatePlayClockPresenters() {
-        for presenter in presenters {
-            presenter.updatePlayClockView?(timeString: getTimeString())
+        for presenter in self.presenters {
+            presenter.updatePlayClockView?(timeString: self.remaining.timeString)
         }
     }
     
     func alertPlayClockTimeup() {
-        for presenter in presenters {
+        for presenter in self.presenters {
             presenter.alertPlayClockTimeup?()
         }
     }
-//    override func getTimeString() -> String {
-//        return String(format: "%d", remaining.int)
-//    }
+    
+    func setDuration(duration: Decimal){
+        self.duration = duration
+    }
+    
     override func reset() {
-        self.remaining = length;
+        self.remaining = self.duration;
         self.updateGameClockPresenters()
     }
 }

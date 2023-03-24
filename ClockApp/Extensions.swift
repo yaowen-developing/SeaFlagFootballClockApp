@@ -16,4 +16,8 @@ extension Decimal {
     }
     var int: Int { rounded(sign == .minus ? .up : .down) }
     var fraction: Decimal { self - Decimal(int) }
+    
+    var timeString: String {String(format: "%d:%0.2d", self.int / 60, self.int % 60)}
 }
+
+

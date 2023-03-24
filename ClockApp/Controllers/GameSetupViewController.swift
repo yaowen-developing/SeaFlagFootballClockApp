@@ -11,31 +11,54 @@ class GameSetupViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
-        self.view.addSubview(shortMinutesSetupSlider)
-        shortMinutesSetupSlider.addTarget(self, action: #selector(changeShortMinutesSetup), for: .valueChanged)
-        self.view.addSubview(shortMinutesWarningLabel)
-        self.view.addSubview(quarterLengthSetupLabel)
-        self.view.addSubview(quarterLengthSlider)
-        quarterLengthSlider.addTarget(self, action: #selector(changeQuarterLengthSetup), for: .valueChanged)
-        self.view.addSubview(clockStoppageRangeSetupLabel)
-        self.view.addSubview(clockStoppageRangeSlider)
-        clockStoppageRangeSlider.addTarget(self, action: #selector(changeClockStoppageRangeSetup), for: .valueChanged)
-        self.view.addSubview(createButton)
-        createButton.addTarget(self, action: #selector(createGame), for: .touchDown)
+        self.setupViews()
+        self.addTargets()
     }
     
+    func setupViews(){
+        self.view.backgroundColor = .white
+        self.view.addSubview(self.shortMinutesSetupSlider)
+        self.view.addSubview(self.shortMinutesWarningLabel)
+        self.view.addSubview(self.quarterDurationSetupLabel)
+        self.view.addSubview(self.quarterDurationSlider)
+        self.view.addSubview(self.createButton)
+        self.view.addSubview(self.clockStoppageRangeSetupLabel)
+        self.view.addSubview(self.clockStoppageRangeSlider)
+    }
     
+    func addTargets(){
+        self.shortMinutesSetupSlider.addTarget(self, action: #selector(changeShortMinutesSetup), for: .valueChanged)
+        self.quarterDurationSlider.addTarget(self, action: #selector(changeQuarterDurationSetup), for: .valueChanged)
+        self.clockStoppageRangeSlider.addTarget(self, action: #selector(changeClockStoppageRangeSetup), for: .valueChanged)
+        self.createButton.addTarget(self, action: #selector(createGame), for: .touchDown)
+    }
     
     @objc
     func changeShortMinutesSetup(){
-        shortMinutesWarningLabel.text = "Warning at Minute " + String(describing: Int(shortMinutesSetupSlider.value))
+        self.shortMinutesWarningLabel.text = "Warning at Minute " + String(describing: Int(self.shortMinutesSetupSlider.value))
+    }
+    
+    @objc
+    func changeClockStoppageRangeSetup(){
+        self.clockStoppageRangeSetupLabel.text = "Stoppage range: " + String(describing: Int(self.clockStoppageRangeSlider.value))
+    }
+    
+    @objc
+    func createGame(){
+        let vc = ClockBoardViewController(game: Game(quarterDuration: Decimal(Int(self.quarterDurationSlider.value) * 60), playClockDuration: 40, stoppageLineInMin: Int(self.clockStoppageRangeSlider.value), warningLineInMin: Int(self.shortMinutesSetupSlider.value)))
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+    }
+    
+    @objc
+    func changeQuarterDurationSetup(){
+        self.quarterDurationSetupLabel.text = "Minutes per quarter: " + String(describing: Int(self.quarterDurationSlider.value))
     }
     
     lazy var shortMinutesWarningLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 50, y: 100, width: self.view.frame.width-100, height: 100))
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 30)
+        label.font = UIFont.systemFont(ofSize: 25)
         label.textAlignment = .left
         label.textColor = .black
         label.text = "Warning at Minute 2"
@@ -50,35 +73,28 @@ class GameSetupViewController: UIViewController {
         return slider
     }()
     
-    lazy var quarterLengthSetupLabel: UILabel = {
+    lazy var quarterDurationSetupLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 50, y: 250, width: self.view.frame.width - 100, height: 100))
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 30)
+        label.font = UIFont.systemFont(ofSize: 25)
         label.textAlignment = .left
         label.textColor = .black
-        label.text = "Quarter Length: 10"
+        label.text = "Minutes per quarter: 8"
         return label
     }()
     
-    lazy var quarterLengthSlider: UISlider = {
+    lazy var quarterDurationSlider: UISlider = {
         let slider = UISlider(frame: CGRect(x: 50, y: 350, width: self.view.frame.width - 100, height: 50))
         slider.maximumValue = 20
         slider.minimumValue = 5
-        slider.value = 10
+        slider.value = 8
         return slider
     }()
-    
-    @objc
-    func changeQuarterLengthSetup(){
-        quarterLengthSetupLabel.text = "Quarter Length: " + String(describing: Int(quarterLengthSlider.value))
-    }
-    
-    
     
     lazy var clockStoppageRangeSetupLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 50, y: 400, width: self.view.frame.width - 100, height: 100))
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 30)
+        label.font = UIFont.systemFont(ofSize: 25)
         label.textAlignment = .left
         label.textColor = .black
         label.text = "Stoppage range: 2"
@@ -93,12 +109,6 @@ class GameSetupViewController: UIViewController {
         return slider
     }()
     
-    @objc
-    func changeClockStoppageRangeSetup(){
-        clockStoppageRangeSetupLabel.text = "Stoppage range: " + String(describing: Int(clockStoppageRangeSlider.value))
-    }
-    
-    
     lazy var createButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 80, y: 600, width: self.view.frame.width - 160, height: 50))
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -110,12 +120,7 @@ class GameSetupViewController: UIViewController {
         return button
     }()
     
-    @objc
-    func createGame(){
-        let vc = ClockBoardViewController(game: Game(quarterLength: Decimal(Int(quarterLengthSlider.value) * 60), playClockLength: 40, stoppageLineInMin: Int(clockStoppageRangeSlider.value), warningLineInMin: Int(shortMinutesSetupSlider.value)))
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
-    }
+
     
     /*
     // MARK: - Navigation

@@ -13,9 +13,9 @@ class GameDriver {
     private let playClock: PlayClock
     private let gameClock: GameClock
     private let timeoutClock: GameClock
-    private var clockSnapshots: ClockSnapshots
+    private var clockSnapshots: [ClockSnapshot]
     
-    struct ClockSnapshots {
+    struct ClockSnapshot {
         var gameClockRemainingTime: Decimal?
         var playClockRemainingTime: Decimal?
     }
@@ -25,8 +25,8 @@ class GameDriver {
         self.playClock = PlayClock(game: game)
         self.gameClock = GameClock(game: game)
         self.timeoutClock = GameClock(game: game)
-        self.clockSnapshots = ClockSnapshots()
-        loadClocks()
+        self.clockSnapshots = [ClockSnapshot(gameClockRemainingTime: gameClock.remaining, playClockRemainingTime: playClock.remaining)]
+        self.loadClocks()
     }
     
     
@@ -36,10 +36,16 @@ class GameDriver {
     }
     
     func registerGameClockPresenter(presenter: ClockPresenter){
-        gameClock.registerPresenter(presenter: presenter)
+        self.gameClock.registerPresenter(presenter: presenter)
     }
+    
     func registerPlayClockPresenter(presenter: ClockPresenter){
-        playClock.registerPresenter(presenter: presenter)
+        self.playClock.registerPresenter(presenter: presenter)
+    }
+    
+    func updateInitialBoardView(){
+        self.gameClock.updateClockPresenters()
+        self.playClock.updateClockPresenters()
     }
     
     func start(){
@@ -47,39 +53,61 @@ class GameDriver {
         self.playClock.start()
     }
     
-    func timeout(){
-        gameClock.pause()
-        playClock.pause()
+    func pause(){
+        self.gameClock.pause()
+        self.playClock.pause()
     }
     
-    func flag(){
-        gameClock.pause()
-        game.flag()
+    func rollbackGameClock(row: Int){
+        self.gameClock.pause()
+        self.gameClock.remaining = self.clockSnapshots[row].gameClockRemainingTime!
+        self.gameClock.updateGameClockPresenters()
     }
-    func incomplete(){
-        gameClock.pause()
-        game.incomplete()
+    
+    func startPausePlayClock(){
+        if(self.playClock.isRunning()){
+            self.playClock.pause()
+        }
+        else{
+            self.playClock.start()
+        }
     }
-    func score(){
-        gameClock.pause()
-        game.score()
-    }
-    func rollbackGameClock(){
-        gameClock.remaining = clockSnapshots.gameClockRemainingTime!
-        gameClock.updateGameClockPresenters()
+    
+    func startPauseGameClock(){
+        if(self.gameClock.isRunning()){
+            self.gameClock.pause()
+        }
+        else{
+            self.gameClock.start()
+        }
     }
     
     func rollbackPlayClock(){
-        playClock.remaining = clockSnapshots.playClockRemainingTime!
-        playClock.updatePlayClockPresenters()
+        self.playClock.remaining = self.clockSnapshots[0].playClockRemainingTime!
+        self.playClock.updatePlayClockPresenters()
     }
     
     func snapshotClocks(){
-        clockSnapshots.gameClockRemainingTime = gameClock.remaining
-        clockSnapshots.playClockRemainingTime = playClock.remaining
+        self.clockSnapshots.insert(ClockSnapshot(gameClockRemainingTime: self.gameClock.remaining, playClockRemainingTime: self.playClock.remaining), at: 1)
     }
     
-    func withinStoppageRange() -> Bool{
-        return gameClock.remaining <= Decimal(game.stoppageLineInMin * 60)
+    func isWithinStoppageRange() -> Bool{
+        return self.gameClock.isWithinWarningTimeWindow()
+    }
+    
+    func resetPlayClock(){
+        if(self.playClock.isRunning()){
+            return
+        }
+        self.playClock.remaining = self.playClock.duration
+        self.playClock.updateClockPresenters()
+    }
+    
+    func setPlayClockDuration(duration: Decimal){
+        self.playClock.setDuration(duration: duration)
+    }
+    
+    func getSnapshots() -> [ClockSnapshot]{
+        return self.clockSnapshots
     }
 }

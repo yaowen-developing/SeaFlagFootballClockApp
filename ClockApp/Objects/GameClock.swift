@@ -13,6 +13,7 @@ enum ClockState {
     case paused
     case ended
 }
+
 @objc protocol ClockPresenter {
     @objc optional func updateGameClockView(timeString: String)
     @objc optional func updatePlayClockView(timeString: String)
@@ -22,41 +23,42 @@ enum ClockState {
 }
 
 class GameClock {
-    var length: Decimal
+    
+    var duration: Decimal
     var remaining: Decimal
     var state: ClockState
     var timer: Timer?
     var presenters: [ClockPresenter]
     weak var game: Game?
+    
     init(game: Game) {
         self.game = game
-        self.length = game.quarterLength
-        self.remaining = game.quarterLength
+        self.duration = game.quarterDuration
+        self.remaining = game.quarterDuration
         self.state = ClockState.paused
-        presenters = []
+        self.presenters = []
     }
     
     func registerPresenter(presenter: ClockPresenter){
-        presenters.append(presenter)
+        self.presenters.append(presenter)
     }
     
     func load(){
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(countdown), userInfo: nil, repeats: true)
+        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(countdown), userInfo: nil, repeats: true)
     }
+    
     func start(){
         self.state = ClockState.running
     }
+    
     func pause(){
         self.state = ClockState.paused
     }
-    func reset(){
-        pause()
-        self.remaining = length
-        self.updateGameClockPresenters()
-    }
     
-    func getTimeString() -> String{
-        return String(format: "%d:%0.2d", remaining.int / 60, remaining.int % 60)
+    func reset(){
+        self.pause()
+        self.remaining = duration
+        self.updateGameClockPresenters()
     }
     
     func isRunning() -> Bool {
@@ -64,39 +66,38 @@ class GameClock {
     }
     
     func updateClockPresenters(){
-        if(remaining == 0){
+        if(self.remaining == 0){
             self.state = .ended
-            alertGameTimeup()
+            self.alertGameTimeup()
         }
-        else if(withinWarningTimeWindow()){
-            shortTimeWarning()
+        else if(self.isWithinWarningTimeWindow()){
+            self.shortTimeWarning()
         }
         else{
-            updateGameClockPresenters()
+            self.updateGameClockPresenters()
         }
     }
     
-    
     func shortTimeWarning(){
-        for presenter in presenters {
+        for presenter in self.presenters {
             presenter.warnShortTime?()
         }
     }
     
     func alertGameTimeup(){
-        for presenter in presenters {
+        for presenter in self.presenters {
             presenter.alertGameTimeup?()
         }
     }
     
     func updateGameClockPresenters() {
-        for presenter in presenters {
-            presenter.updateGameClockView?(timeString: getTimeString())
+        for presenter in self.presenters {
+            presenter.updateGameClockView?(timeString: remaining.timeString)
         }
     }
     
-    func withinWarningTimeWindow() -> Bool{
-        return game!.warningLineInMin > 0 && remaining == Decimal(game!.warningLineInMin * 60)
+    func isWithinWarningTimeWindow() -> Bool{
+        return self.game!.warningLineInMin > 0 && self.remaining == Decimal(game!.warningLineInMin * 60)
     }
     
     func shouldCountdown() -> Bool {
@@ -105,9 +106,9 @@ class GameClock {
     
     @objc
     func countdown(){
-        if(shouldCountdown()){
+        if(self.shouldCountdown() && self.remaining > 0){
             self.remaining -= 0.1
-            updateClockPresenters()
+            self.updateClockPresenters()
         }
     }
 }

@@ -32,27 +32,26 @@ class RefOperationPanelViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        self.view.addSubview(flagButton)
-        flagButton.addTarget(self, action: #selector(flag), for: .touchDown)
+        self.view.addSubview(self.flagButton)
+        self.flagButton.addTarget(self, action: #selector(flag), for: .touchDown)
 
-        self.view.addSubview(timeoutButton)
-        timeoutButton.addTarget(self, action: #selector(timeout), for: .touchDown)
-
+        self.view.addSubview(self.timeoutButton)
+        self.timeoutButton.addTarget(self, action: #selector(timeout), for: .touchDown)
     }
     
     @objc
     func flag() {
-        refOperationExecutor?.flag()
+        self.refOperationExecutor?.flag()
         self.dismiss(animated: false)
     }
     
     @objc
     func timeout() {
-        refOperationExecutor?.timeout()
+        self.refOperationExecutor?.timeout()
         self.dismiss(animated: false)
     }
     
-    lazy var flagButton: UIButton = {
+    var flagButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 100, width: 100, height: 100))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
@@ -62,7 +61,7 @@ class RefOperationPanelViewController: UIViewController {
         return button
     }()
     
-    lazy var timeoutButton: UIButton = {
+    var timeoutButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 300, width: 100, height: 100))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)

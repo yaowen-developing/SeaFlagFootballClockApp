@@ -9,36 +9,22 @@ import UIKit
 import AVFoundation
 
 
-class ClockBoardViewController: UIViewController, ClockPresenter, RefOperationExecutor {
-    
-    
-    
+class ClockBoardViewController: UIViewController, ClockPresenter{
     
     var gameDriver: GameDriver?
     
     convenience init(){
         self.init(game: nil)
     }
-    
     init(game: Game?) {
         super.init(nibName: nil, bundle: nil)
-        gameDriver = GameDriver(game: game!)
-        gameDriver?.registerGameClockPresenter(presenter: self)
-        gameDriver?.registerPlayClockPresenter(presenter: self)
-    }
-    
-    func showAlert(){
-        let alertController = UIAlertController(title: "Confirmation", message:
-                                                    "Click start to run the clock", preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: "Start", style: .default, handler: confirm))
-        alertController.modalPresentationStyle = .fullScreen
-        self.present(alertController, animated: true, completion: nil)
-    }
-    func confirm(alert: UIAlertAction!){
-        confirmStart()
-    }
-    func confirmStart(){
-        gameDriver?.start()
+        self.gameDriver = GameDriver(game: game!)
+        self.gameDriver?.registerGameClockPresenter(presenter: self)
+        self.gameDriver?.registerPlayClockPresenter(presenter: self)
+        self.playClockDurationSegments.selectedSegmentIndex = 0
+        self.gameDriver?.updateInitialBoardView()
+        self.snapShotsTableView.dataSource = self
+        self.snapShotsTableView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -46,53 +32,62 @@ class ClockBoardViewController: UIViewController, ClockPresenter, RefOperationEx
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupGestures()
         // Do any additional setup after loading the view.
     }
-    override func viewDidAppear(_ animated: Bool) {
-        showAlert()
-    }
-    override func viewDidLayoutSubviews() {
-        setupViews()
-    }
-    func setupGestures() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(operate))
-        tap.numberOfTapsRequired = 3
-        self.view.addGestureRecognizer(tap)
-    }
-    func setupViews(){
+    override func viewWillLayoutSubviews() {
         self.view.backgroundColor = .white
-        self.view.addSubview(gameClockLabel)
-        gameClockLabel.frame = CGRect(x: 0, y: 100, width: self.view.frame.width, height: self.view.frame.height / 2)
-        self.view.addSubview(playClockLabel)
-        playClockLabel.frame = CGRect(x: 0, y: 100 + self.view.frame.height / 2, width: self.view.frame.width, height: 200)
+        self.addViews()
+        self.layoutViews()
+        self.setupGestures()
+    }
+
+    func layoutViews(){
+        self.playClockTitleLabel.frame = CGRect(x: 0, y: 50, width: self.view.frame.width, height: 50)
+        self.playClockButton.frame = CGRect(x: 100, y: self.playClockTitleLabel.frame.maxY + 10, width: self.view.frame.width - 200, height: 100)
+        self.playClockDurationSegments.frame = CGRect(x: 100, y: self.playClockButton.frame.maxY + 10, width: self.view.frame.width - 200, height: 40)
+        self.gameClockTitleLabl.frame = CGRect(x: 0, y: self.playClockDurationSegments.frame.maxY + 30, width: self.view.frame.width, height: 50)
+        self.gameClockButton.frame = CGRect(x: 50, y: self.gameClockTitleLabl.frame.maxY + 10, width: self.view.frame.width - 100, height: 150)
+        self.gameClockSnapshotsButton.frame = CGRect(x: 50, y: self.gameClockButton.frame.maxY + 10, width: self.view.frame.width - 100, height: 60)
+        self.snapShotsTableView.frame = CGRect(x: 50, y: self.gameClockSnapshotsButton.frame.maxY + 10, width: self.view.frame.width - 100, height: self.view.frame.height - 40 - self.gameClockSnapshotsButton.frame.maxY)
     }
     
-    @objc
-    func operate(){
-        //presents menu
-        gameDriver?.snapshotClocks()
-        let vc = RefOperationPanelViewController(refOperationExecutor: self)
-        vc.modalPresentationStyle = .fullScreen
-        self.present(vc, animated: false)
+    func addViews(){
+        self.view.addSubview(self.playClockTitleLabel)
+        self.view.addSubview(self.playClockButton)
+        self.view.addSubview(self.self.playClockDurationSegments)
+        self.view.addSubview(self.gameClockTitleLabl)
+        self.view.addSubview(self.gameClockButton)
+        self.view.addSubview(self.gameClockSnapshotsButton)
+        self.view.addSubview(self.snapShotsTableView)
     }
     
-    
-    func flag() {
-        gameDriver?.flag()
-        gameDriver?.rollbackGameClock()
+    func setupGestures(){
+        self.setupPlayClockGestures()
+        self.setupGameClockGestures()
+        self.setupGameClockSnapshotButtonGestures()
+        self.playClockDurationSegments.addTarget(self, action: #selector(switchPlayClockDuration), for: .valueChanged)
     }
     
-    func timeout() {
-        gameDriver?.timeout()
-        gameDriver?.rollbackPlayClock()
-        gameDriver?.rollbackGameClock()
+    func setupGameClockGestures(){
+        let tap = UITapGestureRecognizer(target: self, action: #selector(startPauseGameClock))
+        tap.numberOfTapsRequired = 2
+        self.gameClockButton.addGestureRecognizer(tap)
     }
     
+    func setupPlayClockGestures(){
+        let longpress = UILongPressGestureRecognizer(target: self, action: #selector(resetPlayClock))
+        longpress.minimumPressDuration = 1.5
+        self.playClockButton.addGestureRecognizer(longpress)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(startPausePlayClock))
+        tap.numberOfTapsRequired = 2
+        self.playClockButton.addGestureRecognizer(tap)
+    }
     
-    
-    
-    func incomplete(){
+    func setupGameClockSnapshotButtonGestures(){
+        let tap = UITapGestureRecognizer(target: self, action: #selector(snapshotClocks))
+        tap.numberOfTapsRequired = 2
+        self.gameClockSnapshotsButton.addGestureRecognizer(tap)
     }
     
     
@@ -113,41 +108,118 @@ class ClockBoardViewController: UIViewController, ClockPresenter, RefOperationEx
     
     
     func updatePlayClockView(timeString: String) {
-        playClockLabel.text = timeString
+        self.playClockButton.setTitle(timeString, for: .normal)
     }
+    
     func updateGameClockView(timeString: String) {
-        gameClockLabel.text = timeString
+        self.gameClockButton.setTitle(timeString, for: .normal)
     }
     
-    lazy var gameClockLabel: UILabel = {
+    @objc
+    func resetPlayClock(){
+        self.gameDriver?.resetPlayClock()
+    }
+
+    @objc
+    func switchPlayClockDuration(){
+        if(self.playClockDurationSegments.selectedSegmentIndex == 0){
+            self.gameDriver?.setPlayClockDuration(duration: 40)
+        }
+        else{
+            self.gameDriver?.setPlayClockDuration(duration: 25)
+        }
+    }
+    
+    @objc
+    func startPausePlayClock(){
+        self.gameDriver?.startPausePlayClock()
+    }
+    
+    @objc
+    func startPauseGameClock(){
+        self.gameDriver?.startPauseGameClock()
+    }
+    
+    @objc
+    func snapshotClocks(){
+        self.gameDriver?.snapshotClocks()
+        self.snapShotsTableView.reloadData()
+    }
+    
+    var playClockTitleLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 100)
+        label.font = UIFont.systemFont(ofSize: 30)
+        label.textColor = .black
+        label.textAlignment = .center
+        label.text = "Play Clock"
+        return label
+    }()
+    
+    var playClockButton: UIButton = {
+        let button = UIButton()
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 50)
+        button.backgroundColor = .gray
+        return button
+    }()
+
+    var playClockDurationSegments: UISegmentedControl = {
+        let segmentControl = UISegmentedControl(items: ["40", "25"])
+        return segmentControl
+    }()
+    
+    var gameClockTitleLabl: UILabel = {
+        let label = UILabel()
+        label.text = "Game Clock"
+        label.font = UIFont.systemFont(ofSize: 30)
         label.textAlignment = .center
         label.textColor = .black
         return label
     }()
     
-    lazy var playClockLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 50)
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
+    var gameClockButton: UIButton = {
+        let button = UIButton()
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 100)
+        button.backgroundColor = .gray
+        return button
     }()
     
+    var gameClockSnapshotsButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Snapshot", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 25)
+        button.backgroundColor = .systemOrange
+        return button
+    }()
     
+    var snapShotsTableView: UITableView = {
+        let tableView = UITableView()
+        return tableView
+    }()
+}
+
+extension ClockBoardViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(style: .normal, title: "Rewind", handler:
+            {_,_,completionHandler in
+                self.gameDriver?.rollbackGameClock(row: indexPath.row)
+                completionHandler(true)
+            })
+        action.backgroundColor = .systemOrange
+        let configurations = UISwipeActionsConfiguration(actions: [action])
+        configurations.performsFirstActionWithFullSwipe = false
+        return configurations
+    }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.gameDriver!.getSnapshots().count
+    }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.textLabel?.text = (self.gameDriver?.getSnapshots()[indexPath.row].gameClockRemainingTime)!.timeString
+        cell.textLabel?.textAlignment = .center
+        return cell
+    }
+    
     
 }
