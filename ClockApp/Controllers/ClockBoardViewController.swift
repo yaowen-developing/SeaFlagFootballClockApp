@@ -98,12 +98,12 @@ class ClockBoardViewController: UIViewController, ClockPresenter{
     
     func alertGameTimeup(){
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-        AudioServicesPlaySystemSound(1050)
+        AudioServicesPlaySystemSound(1005)
     }
     
     func alertPlayClockTimeup() {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-        AudioServicesPlaySystemSound(1080)
+        AudioServicesPlaySystemSound(1005)
     }
     
     func alertClockStart(){
