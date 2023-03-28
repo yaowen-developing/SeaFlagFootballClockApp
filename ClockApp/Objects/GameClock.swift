@@ -20,6 +20,8 @@ enum ClockState {
     @objc optional func warnShortTime()
     @objc optional func alertGameTimeup()
     @objc optional func alertPlayClockTimeup()
+    @objc optional func alertClockStart()
+    @objc optional func alertClockStop()
 }
 
 class GameClock {
@@ -49,10 +51,16 @@ class GameClock {
     
     func start(){
         self.state = ClockState.running
+        for presenter in self.presenters {
+            presenter.alertClockStart?()
+        }
     }
     
     func pause(){
         self.state = ClockState.paused
+        for presenter in self.presenters {
+            presenter.alertClockStop?()
+        }
     }
     
     func reset(){

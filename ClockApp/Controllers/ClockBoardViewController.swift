@@ -106,6 +106,15 @@ class ClockBoardViewController: UIViewController, ClockPresenter{
         AudioServicesPlaySystemSound(1080)
     }
     
+    func alertClockStart(){
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        AudioServicesPlaySystemSound(1004)
+    }
+    
+    func alertClockStop(){
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        AudioServicesPlaySystemSound(1003)
+    }
     
     func updatePlayClockView(timeString: String) {
         self.playClockButton.setTitle(timeString, for: .normal)
