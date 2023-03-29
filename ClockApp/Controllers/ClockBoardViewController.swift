@@ -98,14 +98,23 @@ class ClockBoardViewController: UIViewController, ClockPresenter{
     
     func alertGameTimeup(){
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-        AudioServicesPlaySystemSound(1050)
+        AudioServicesPlaySystemSound(1005)
     }
     
     func alertPlayClockTimeup() {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-        AudioServicesPlaySystemSound(1080)
+        AudioServicesPlaySystemSound(1005)
     }
     
+    func alertDoubleClickOnClock(){
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        AudioServicesPlaySystemSound(1004)
+    }
+    
+    func alertDoubleClickOnSnapshot(){
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        AudioServicesPlaySystemSound(1003)
+    }
     
     func updatePlayClockView(timeString: String) {
         self.playClockButton.setTitle(timeString, for: .normal)
@@ -133,17 +142,20 @@ class ClockBoardViewController: UIViewController, ClockPresenter{
     @objc
     func startPausePlayClock(){
         self.gameDriver?.startPausePlayClock()
+        self.alertDoubleClickOnClock()
     }
     
     @objc
     func startPauseGameClock(){
         self.gameDriver?.startPauseGameClock()
+        self.alertDoubleClickOnClock()
     }
     
     @objc
     func snapshotClocks(){
         self.gameDriver?.snapshotClocks()
         self.snapShotsTableView.reloadData()
+        self.alertDoubleClickOnSnapshot()
     }
     
     var playClockTitleLabel: UILabel = {
