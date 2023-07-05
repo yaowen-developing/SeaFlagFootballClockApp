@@ -16,14 +16,38 @@ class GameSetupViewController: UIViewController {
     }
     
     func setupViews(){
+        let scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height:1000)
         self.view.backgroundColor = .white
-        self.view.addSubview(self.shortMinutesSetupSlider)
-        self.view.addSubview(self.shortMinutesWarningLabel)
-        self.view.addSubview(self.quarterDurationSetupLabel)
-        self.view.addSubview(self.quarterDurationSlider)
-        self.view.addSubview(self.createButton)
-        self.view.addSubview(self.clockStoppageRangeSetupLabel)
-        self.view.addSubview(self.clockStoppageRangeSlider)
+        scrollView.addSubview(self.shortMinutesSetupSlider)
+        scrollView.addSubview(self.shortMinutesWarningLabel)
+        scrollView.addSubview(self.quarterDurationSetupLabel)
+        scrollView.addSubview(self.quarterDurationSlider)
+        scrollView.addSubview(self.createButton)
+        scrollView.addSubview(self.clockStoppageRangeSetupLabel)
+        scrollView.addSubview(self.clockStoppageRangeSlider)
+
+        scrollView.addSubview(self.homeTeamNameLabel)
+        scrollView.addSubview(self.homeTeamNameInput)
+        scrollView.addSubview(self.awayTeamNameLabel)
+        scrollView.addSubview(self.awayTeamNameInput)
+
+                
+        self.view.addSubview(scrollView)
+        
+//        self.view.backgroundColor = .white
+//        self.view.addSubview(self.shortMinutesSetupSlider)
+//        self.view.addSubview(self.shortMinutesWarningLabel)
+//        self.view.addSubview(self.quarterDurationSetupLabel)
+//        self.view.addSubview(self.quarterDurationSlider)
+//        self.view.addSubview(self.createButton)
+//        self.view.addSubview(self.clockStoppageRangeSetupLabel)
+//        self.view.addSubview(self.clockStoppageRangeSlider)
+//
+//        self.view.addSubview(self.homeTeamNameLabel)
+//        self.view.addSubview(self.homeTeamNameInput)
+//        self.view.addSubview(self.awayTeamNameLabel)
+//        self.view.addSubview(self.awayTeamNameInput)
     }
     
     func addTargets(){
@@ -31,6 +55,8 @@ class GameSetupViewController: UIViewController {
         self.quarterDurationSlider.addTarget(self, action: #selector(changeQuarterDurationSetup), for: .valueChanged)
         self.clockStoppageRangeSlider.addTarget(self, action: #selector(changeClockStoppageRangeSetup), for: .valueChanged)
         self.createButton.addTarget(self, action: #selector(createGame), for: .touchDown)
+        self.view.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(UIView.endEditing)))
+
     }
     
     @objc
@@ -45,7 +71,7 @@ class GameSetupViewController: UIViewController {
     
     @objc
     func createGame(){
-        let vc = ClockBoardViewController(game: Game(quarterDuration: Decimal(Int(self.quarterDurationSlider.value) * 60), playClockDuration: 40, stoppageLineInMin: Int(self.clockStoppageRangeSlider.value), warningLineInMin: Int(self.shortMinutesSetupSlider.value)))
+        let vc = ClockBoardViewController(game: Game(quarterDuration: Decimal(Int(self.quarterDurationSlider.value) * 60), playClockDuration: 40, stoppageLineInMin: Int(self.clockStoppageRangeSlider.value), warningLineInMin: Int(self.shortMinutesSetupSlider.value), homeTeam: String(self.homeTeamNameInput.text ?? "Home"), awayTeam: String(self.awayTeamNameInput.text ?? "Away")))
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
@@ -109,8 +135,34 @@ class GameSetupViewController: UIViewController {
         return slider
     }()
     
+    lazy var homeTeamNameLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x : 50, y : 550, width: self.view.frame.width-160, height: 50))
+        
+        label.text = "Home Team Name:"
+        return label
+    }()
+    
+    lazy var homeTeamNameInput: UITextField = {
+        let input = UITextField(frame:CGRect( x: 50, y : 600, width: self.view.frame.width - 100, height : 50))
+        input.placeholder = "Home Team"
+        return input
+    }()
+    
+    lazy var awayTeamNameLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x : 50, y : 650, width: self.view.frame.width-160, height: 50))
+        
+        label.text = "Away Team Name:"
+        return label
+    }()
+    
+    lazy var awayTeamNameInput: UITextField = {
+        let input = UITextField(frame:CGRect( x: 50, y : 700, width: self.view.frame.width - 100, height : 50))
+        input.placeholder = "Away Team"
+        return input
+    }()
+    
     lazy var createButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 80, y: 600, width: self.view.frame.width - 160, height: 50))
+        let button = UIButton(frame: CGRect(x: 80, y: 750, width: self.view.frame.width - 160, height: 50))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = UIFont.systemFont(ofSize: 24)
         button.setTitle("Create", for: .normal)
@@ -120,7 +172,8 @@ class GameSetupViewController: UIViewController {
         return button
     }()
     
-
+    
+    
     
     /*
     // MARK: - Navigation
