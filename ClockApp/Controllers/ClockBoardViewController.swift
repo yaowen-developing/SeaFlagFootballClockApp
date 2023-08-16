@@ -48,7 +48,15 @@ class ClockBoardViewController: UIViewController, ClockPresenter{
         self.gameClockTitleLabl.frame = CGRect(x: 0, y: self.playClockDurationSegments.frame.maxY + 30, width: self.view.frame.width, height: 50)
         self.gameClockButton.frame = CGRect(x: 50, y: self.gameClockTitleLabl.frame.maxY + 10, width: self.view.frame.width - 100, height: 150)
         self.gameClockSnapshotsButton.frame = CGRect(x: 50, y: self.gameClockButton.frame.maxY + 10, width: self.view.frame.width - 100, height: 60)
-        self.snapShotsTableView.frame = CGRect(x: 50, y: self.gameClockSnapshotsButton.frame.maxY + 10, width: self.view.frame.width - 100, height: self.view.frame.height - 40 - self.gameClockSnapshotsButton.frame.maxY)
+        self.snapShotsTableView.frame = CGRect(x: 50, y: self.gameClockSnapshotsButton.frame.maxY + 10, width: self.view.frame.width - 100, height: self.view.frame.height - 150 - self.gameClockSnapshotsButton.frame.maxY)
+        
+        self.homeTeamLabel.frame = CGRect(x: 25, y: self.snapShotsTableView.frame.maxY + 10, width: self.view.frame.width / 2 - 20, height: 50)
+        self.homeTeamLabel.text = (self.gameDriver?.getHomeTeam())! + "(Home)"
+        self.homeScore.frame = CGRect(x:25, y: self.homeTeamLabel.frame.maxY + 10, width:50,height:50)
+        
+        self.awayTeamLabel.frame = CGRect(x: self.view.frame.width / 2 + 10, y: self.snapShotsTableView.frame.maxY + 10, width: self.view.frame.width / 2 - 20, height: 50)
+        self.awayTeamLabel.text = (self.gameDriver?.getAwayTeam())! + "(Away)"
+        self.awayScore.frame = CGRect(x: self.view.frame.width / 2 + 10, y: self.awayTeamLabel.frame.maxY + 10, width: 50, height: 50)
     }
     
     func addViews(){
@@ -59,6 +67,12 @@ class ClockBoardViewController: UIViewController, ClockPresenter{
         self.view.addSubview(self.gameClockButton)
         self.view.addSubview(self.gameClockSnapshotsButton)
         self.view.addSubview(self.snapShotsTableView)
+        
+        self.view.addSubview(self.homeTeamLabel)
+        self.view.addSubview(self.awayTeamLabel)
+        
+        self.view.addSubview(self.homeScore)
+        self.view.addSubview(self.awayScore)
     }
     
     func setupGestures(){
@@ -176,6 +190,7 @@ class ClockBoardViewController: UIViewController, ClockPresenter{
 
     var playClockDurationSegments: UISegmentedControl = {
         let segmentControl = UISegmentedControl(items: ["40", "25"])
+        segmentControl.selectedSegmentTintColor = .systemBlue
         return segmentControl
     }()
     
@@ -203,6 +218,30 @@ class ClockBoardViewController: UIViewController, ClockPresenter{
         return button
     }()
     
+    var homeTeamLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    var awayTeamLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    var homeScore: UITextField = {
+        let input = UITextField()
+        input.text = "0"
+        input.keyboardType = UIKeyboardType.numberPad
+        return input
+    }()
+    
+    var awayScore: UITextField = {
+        let input = UITextField()
+        input.text = "0"
+        input.keyboardType = UIKeyboardType.numberPad
+        return input
+    }()
+
     var snapShotsTableView: UITableView = {
         let tableView = UITableView()
         return tableView

@@ -110,4 +110,12 @@ class GameDriver {
     func getSnapshots() -> [ClockSnapshot]{
         return self.clockSnapshots
     }
+    
+    func getHomeTeam() -> String {
+        return self.game.homeTeam
+    }
+    
+    func getAwayTeam() -> String {
+        return self.game.awayTeam
+    }
 }
